@@ -1,0 +1,37 @@
+version: '3'
+
+services:
+  registry:
+    image: registry:2
+    environment:
+      REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY: /var/lib/registry
+      REGISTRY_AUTH: htpasswd
+      REGISTRY_HTTP_SECRET: ${SECRET}
+      REGISTRY_AUTH_HTPASSWD_PATH: /auth/htpasswd
+      REGISTRY_AUTH_HTPASSWD_REALM: "Registry Realm"
+    volumes:
+      - ./data:/var/lib/registry
+      - ./auth:/auth
+    networks:
+      - internal
+      - proxy
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    networks:
+      - internal
+      - proxy
+    depends_on:
+      - registry
+
+
+
+networks:
+  internal:
+    driver: bridge
+  proxy:
+    external: true
