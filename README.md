@@ -11,3 +11,7 @@
 4. Add `SECRET=`
 
 5. Generate secret with `openssl rand -hex 64`
+
+## NGINX
+
+See the [offcial documentation](https://github.com/distribution/distribution/blob/main/docs/content/recipes/nginx.md) for details.
